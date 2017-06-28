@@ -1,44 +1,49 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <button class="reset" @click="reset" :style="{backgroundColor: styleBus.color, color: styleBus.backgroundColor}">reset</button>
+    <button class="reset" @click="resetColors" :style="buttonColors">reset</button>
     <h2>Choose your style prefs:</h2>
     <ul>
       <li>
         <label for="bg-color">Background color</label>
-        <input type="color" id="bg-color" :value="styleBus.backgroundColor" @change="bgColorChanged"/>
+        <input type="color" id="bg-color" :value="colors.backgroundColor" @change="changeBackgroundColor"/>
       </li>
       <li>
         <label for="txt-color">Text color</label>
-        <input type="color" id="txt-color" :value="styleBus.color" @change="txtColorChanged"/>
+        <input type="color" id="txt-color" :value="colors.color" @change="changeColor"/>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import styleBus from '../services/styleBus.js'
-
 export default {
   name: 'user-prefs',
-  data () {
+  data() {
     return {
-      msg: 'User prefferences',
-      styleBus
+      msg: 'Choose your colors:'
+    }
+  },
+  computed: {
+    buttonColors() {
+      return {
+        color: this.$store.state.colors.backgroundColor,
+        backgroundColor: this.$store.state.colors.color
+      }
+    },
+    colors() {
+      return this.$store.state.colors
     }
   },
   methods: {
-    bgColorChanged(e) {
-      styleBus.backgroundColor = e.target.value
-      localStorage.setItem('colors', JSON.stringify(styleBus))
+    changeBackgroundColor(e) {
+      this.$store.commit('changeBackgroundColor', e.target.value)
     },
-    txtColorChanged(e) {
-      styleBus.color = e.target.value
-      localStorage.setItem('colors', JSON.stringify(styleBus))
+    changeColor(e) {
+      this.$store.commit('changeColor', e.target.value)
     },
-    reset () {
-      styleBus.reset();
-      localStorage.setItem('colors', JSON.stringify(styleBus))
+    resetColors () {
+      this.$store.commit('resetColors')
     }
   }
 }

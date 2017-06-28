@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :style="styleBus">
+  <div id="app" :style="colors">
     <nav>
       <ul>
         <li>
@@ -18,12 +18,11 @@
 </template>
 
 <script>
-import styleBus from './services/styleBus.js'
 export default {
   name: 'app',
-  data() {
-    return {
-      styleBus
+  computed: {
+    colors() {
+      return this.$store.state.colors
     }
   }
 }

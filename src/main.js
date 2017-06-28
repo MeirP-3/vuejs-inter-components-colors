@@ -8,25 +8,37 @@ import router from './router'
 Vue.use(Vuex)
 Vue.config.productionTip = false
 
-// const store = new Vuex.store({
-//   state: {
-//     bgColor: '#ffffff',
-//     txtColor: '#000000'
-//   },
-//   mutations: {
-//     changeBgColor(color) {
-//       state.bgColor = color
-//     },
-//     changeTxtColor(color) {
-//       state.txtColor
-//     }
-//   }
-// })
+const initialState = {
+  backgroundColor: '#004040',
+  color: '#ACFFFF'
+}
+
+const store = new Vuex.Store({
+  state: {
+    colors:
+    JSON.parse(localStorage.getItem('colors')) || initialState
+  },
+  mutations: {
+    changeBackgroundColor(state, color) {
+      state.colors.backgroundColor = color
+      localStorage.setItem('colors', JSON.stringify(state.colors))
+    },
+    changeColor(state, color) {
+      state.colors.color = color
+      localStorage.setItem('colors', JSON.stringify(state.colors))
+    },
+    resetColors(state) {
+      state.colors = initialState
+      localStorage.setItem('colors', JSON.stringify(initialState))
+    }
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })
