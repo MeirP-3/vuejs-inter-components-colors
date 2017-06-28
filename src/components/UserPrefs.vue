@@ -1,37 +1,44 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <button class="reset" @click="reset" :style="{backgroundColor: styleBus.color, color: styleBus.backgroundColor}">reset</button>
     <h2>Choose your style prefs:</h2>
     <ul>
       <li>
         <label for="bg-color">Background color</label>
-        <input type="color" id="bg-color" value="#ffffff" @change="bgColorChanged"/>
+        <input type="color" id="bg-color" :value="styleBus.backgroundColor" @change="bgColorChanged"/>
       </li>
       <li>
         <label for="txt-color">Text color</label>
-        <input type="color" id="txt-color" value="#000000" @change="txtColorChanged"/>
+        <input type="color" id="txt-color" :value="styleBus.color" @change="txtColorChanged"/>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { BG_COLOR, TXT_COLOR } from '../services/consts.js'
-import bus from '../services/bus.js'
+import styleBus from '../services/styleBus.js'
 
 export default {
   name: 'user-prefs',
   data () {
     return {
-      msg: 'User prefferences'
+      msg: 'User prefferences',
+      styleBus
     }
   },
   methods: {
     bgColorChanged(e) {
-      bus.$emit(BG_COLOR, e)
+      styleBus.backgroundColor = e.target.value
+      localStorage.setItem('colors', JSON.stringify(styleBus))
     },
     txtColorChanged(e) {
-      bus.$emit(TXT_COLOR, e)
+      styleBus.color = e.target.value
+      localStorage.setItem('colors', JSON.stringify(styleBus))
+    },
+    reset () {
+      styleBus.reset();
+      localStorage.setItem('colors', JSON.stringify(styleBus))
     }
   }
 }
@@ -46,9 +53,17 @@ ul {
   list-style-type: none;
   padding: 0;
 }
-
 li {
   display: inline-block;
   margin: 0 10px;
+}
+.reset {
+  height: 46px;
+  width: 100px;
+  outline: none;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
 }
 </style>

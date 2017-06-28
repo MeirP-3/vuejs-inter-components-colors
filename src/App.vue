@@ -1,34 +1,30 @@
 <template>
-  <div id="app" :style="style">
-    <ul>
-      <li>
-        <router-link to="/">Home</router-link>
-      </li>
-      <li>
-        <router-link to="/prefs">settings</router-link>
-      </li>
-    </ul>
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+  <div id="app" :style="styleBus">
+    <nav>
+      <ul>
+        <li>
+          <router-link to="/">Home</router-link>
+        </li>
+        <li>
+          <router-link to="/prefs">settings</router-link>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <img src="./assets/logo.png">
+      <router-view></router-view>
+    </main>
   </div>
 </template>
 
 <script>
-import { BG_COLOR, TXT_COLOR } from './services/consts.js'
-import bus from './services/bus.js'
+import styleBus from './services/styleBus.js'
 export default {
   name: 'app',
   data() {
     return {
-      style: {
-        backgroundColor: '#fff',
-        color: '#000'
-      }
+      styleBus
     }
-  },
-  created() {
-    bus.$on(BG_COLOR, e => this.style.backgroundColor = e.target.value)
-    bus.$on(TXT_COLOR, e => this.style.color = e.target.value)
   }
 }
 </script>
@@ -38,6 +34,9 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+}
+body {
+  overflow: hidden
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
